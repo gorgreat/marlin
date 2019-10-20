@@ -82,13 +82,13 @@
                               </div>
                               
                             <!-- Выводим  содержимое массива циклом -->
-                                 <?php foreach ($comments as $key => $value): ?>        
+                                 <?php foreach ($comments as $comment): ?>        
                                 <div class="media">                                                                    
-                                  <img src="<?php echo $comments[$key]["avatar"]?>" class="mr-3" alt="<?php echo $comments[$key]["username"]?>" width="64" height="64">
+                                  <img src="<?php echo $comment["avatar"]?>" class="mr-3" alt="<?php echo $comment["username"]?>" width="64" height="64">
                                   <div class="media-body">
-                                    <h5 class="mt-0"><?php echo $comments[$key]["username"]?></h5> 
-                                    <span><small><?php echo $comments[$key]["date"]?></small></span>
-                                    <p> <?php echo $comments[$key]["text"]?></p>                                 
+                                    <h5 class="mt-0"><?php echo $comment["username"]?></h5> 
+                                    <span><small><?php echo $comment["date"]?></small></span>
+                                    <p> <?php echo $comment["text"]?></p>                                 
                                   </div>                                  
                                 </div>
                                 <?php endforeach;?>   

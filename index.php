@@ -1,27 +1,45 @@
 <?php 
-    $comments = [
-        [
-            "username" => "John Doe",
-            "id" => "01",
-            "avatar" => "img/no-user.jpg",
-            "date" => "12/10/2025",
-            "text" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe aspernatur, ullam doloremque deleniti, sequi obcaecati."
-        ],
-        [
-            "username" => "Vasya",
-            "id" => "02",            
-            "avatar" => "img/no-user.jpg",
-            "date" => "12/10/2042",
-            "text" => "Вася оставил коммент тест такой то "
-        ], 
-        [
-            "username" => "Alex",
-            "id" => "03",            
-            "avatar" => "img/no-user.jpg",
-            "date" => "12/06/2020",
-            "text" => "Далеко-далеко за словесными, горами в стране гласных и согласных живут рыбные тексты. Подпоясал жизни решила алфавит предупредила сбить своего города пояс страна вопрос всеми моей, реторический возвращайся языком что страну скатился имеет. "
-        ]               
-    ];
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'on');
+    //подключение к бд и выполнение запроса на получение массива комментариев из таблицы
+    try {
+        $pdo = new PDO('mysql:host=localhost;dbname=marlin_db;charset=utf8','root','');    
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        //безопасный режим
+        $id = 0;
+        $sql = "SELECT * FROM comments WHERE `id` > ?";
+        $result = $pdo->prepare($sql);
+
+        $result->execute([$id]);
+        $comments_arr = $result->fetchAll();
+    }
+    catch(PDOException $e) {
+        echo $e->getMessage();
+    }
+    // $comments = [
+    //     [
+    //         "username" => "John Doe",
+    //         "id" => "01",
+    //         "avatar" => "img/no-user.jpg",
+    //         "date" => "12/10/2025",
+    //         "text" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe aspernatur, ullam doloremque deleniti, sequi obcaecati."
+    //     ],
+    //     [
+    //         "username" => "Vasya",
+    //         "id" => "02",            
+    //         "avatar" => "img/no-user.jpg",
+    //         "date" => "12/10/2042",
+    //         "text" => "Вася оставил коммент тест такой то "
+    //     ], 
+    //     [
+    //         "username" => "Alex",
+    //         "id" => "03",            
+    //         "avatar" => "img/no-user.jpg",
+    //         "date" => "12/06/2020",
+    //         "text" => "Далеко-далеко за словесными, горами в стране гласных и согласных живут рыбные тексты. Подпоясал жизни решила алфавит предупредила сбить своего города пояс страна вопрос всеми моей, реторический возвращайся языком что страну скатился имеет. "
+    //     ]               
+    // ];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,11 +100,11 @@
                               </div>
                               
                             <!-- Выводим  содержимое массива циклом -->
-                                 <?php foreach ($comments as $comment): ?>        
+                                 <?php foreach ($comments_arr as $comment): ?>        
                                 <div class="media">                                                                    
-                                  <img src="<?php echo $comment["avatar"]?>" class="mr-3" alt="<?php echo $comment["username"]?>" width="64" height="64">
+                                  <img src="img/<?php echo $comment["avatar"]?>" class="mr-3" alt="<?php echo $comment["name"]?>" width="64" height="64">
                                   <div class="media-body">
-                                    <h5 class="mt-0"><?php echo $comment["username"]?></h5> 
+                                    <h5 class="mt-0"><?php echo $comment["name"]?></h5> 
                                     <span><small><?php echo $comment["date"]?></small></span>
                                     <p> <?php echo $comment["text"]?></p>                                 
                                   </div>                                  

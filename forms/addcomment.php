@@ -1,4 +1,8 @@
 <?php 
+session_start();
+if(isset($_POST['submit'])) {
+    $_SESSION['success'] = '<div class="alert alert-success" role="alert"> Комментарий успешно добавлен </div>';
+}
 
 $data = [
     'name' => $_POST[name],

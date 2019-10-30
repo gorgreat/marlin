@@ -10,7 +10,7 @@
 
         //безопасный режим
         $id = 0;
-        $sql = "SELECT * FROM comments WHERE `id` > ?";
+        $sql = "SELECT * FROM comments ORDER BY `date` DESC";
         $result = $pdo->prepare($sql);
 
         $result->execute([$id]);

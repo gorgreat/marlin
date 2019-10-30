@@ -1,6 +1,8 @@
 <?php 
     error_reporting(E_ALL);
     ini_set('display_errors', 'on');
+    session_start();
+    
     //подключение к бд и выполнение запроса на получение массива комментариев из таблицы
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=marlin_db;charset=utf8','root','');    
@@ -95,10 +97,15 @@
                             <div class="card-header"><h3>Комментарии</h3></div>
 
                             <div class="card-body">
-                              <div class="alert alert-success" role="alert">
+                              <!-- <div class="alert alert-success" role="alert">
                                 Комментарий успешно добавлен
-                              </div>
-                              
+                              </div> -->
+                                <?php 
+                                    if (!empty($_SESSION['success'])) {
+                                        echo $_SESSION['success'];                                        
+                                        unset($_SESSION['success']);
+                                    } 
+                                ?>    
                             <!-- Выводим  содержимое массива циклом -->
                                  <?php foreach ($comments_arr as $comment): ?>        
                                 <div class="media">                                                                    
@@ -120,7 +127,7 @@
                             <div class="card-header"><h3>Оставить комментарий</h3></div>
 
                             <div class="card-body">
-                                <form action="forms/addcomment.php" method="post">
+                                <form action="forms/addcomment.php" method="POST">
                                     <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Имя</label>
                                     <input name="name" class="form-control" id="exampleFormControlTextarea1" />
@@ -129,7 +136,7 @@
                                     <label for="exampleFormControlTextarea1">Сообщение</label>
                                     <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                   </div>
-                                  <button type="submit" class="btn btn-success">Отправить</button>
+                                  <button type="submit" class="btn btn-success" name="submit">Отправить</button>
                                 </form>
                             </div>
                         </div>

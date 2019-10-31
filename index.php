@@ -10,7 +10,7 @@
 
         //безопасный режим
         $id = 0;
-        $sql = "SELECT * FROM comments ORDER BY `date` DESC";
+        $sql = "SELECT * FROM comments ORDER BY `id` DESC";
         $result = $pdo->prepare($sql);
 
         $result->execute([$id]);
@@ -112,7 +112,8 @@
                                   <img src="img/<?php echo $comment["avatar"]?>" class="mr-3" alt="<?php echo $comment["name"]?>" width="64" height="64">
                                   <div class="media-body">
                                     <h5 class="mt-0"><?php echo $comment["name"]?></h5> 
-                                    <span><small><?php echo $comment["date"]?></small></span>
+                                    <span><small> <?php echo date("d/m/Y", strtotime($comment["date"])); ?>
+                                    </small></span>
                                     <p> <?php echo $comment["text"]?></p>                                 
                                   </div>                                  
                                 </div>

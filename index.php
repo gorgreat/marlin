@@ -106,13 +106,14 @@
                                         unset($_SESSION['success']);
                                     } 
                                 ?>    
-                            <!-- Выводим  содержимое массива циклом -->
-                                 <?php foreach ($comments_arr as $comment): ?>        
+                            <!-- Выводим  содержимое массива циклом -->                            
+                                 <?php 
+                                 foreach ($comments_arr as $comment): ?>        
                                 <div class="media">                                                                    
                                   <img src="img/<?php echo $comment["avatar"]?>" class="mr-3" alt="<?php echo $comment["name"]?>" width="64" height="64">
                                   <div class="media-body">
                                     <h5 class="mt-0"><?php echo $comment["name"]?></h5> 
-                                    <span><small> <?php echo date("d/m/Y", strtotime($comment["date"])); ?>
+                                    <span><small> <?php echo date("d/m/y", strtotime($comment["date"])); ?>
                                     </small></span>
                                     <p> <?php echo $comment["text"]?></p>                                 
                                   </div>                                  
@@ -130,9 +131,9 @@
                             <div class="card-body">
                                 <form action="forms/addcomment.php" method="POST">
                                     <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Имя</label>
-                                    <input name="name" class="form-control" id="exampleFormControlTextarea1" />
-                                  </div>
+                                        <label for="exampleFormControlTextarea1">Имя</label>
+                                        <input name="name" class="form-control" id="exampleFormControlTextarea1" />
+                                    </div>
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Сообщение</label>
                                     <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>

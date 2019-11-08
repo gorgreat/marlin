@@ -1,3 +1,8 @@
+<?php 
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'on');
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.php">
                     Project
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +42,7 @@
                                 <a class="nav-link" href="login.html">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="register.html">Register</a>
+                                <a class="nav-link" href="register.php">Register</a>
                             </li>
                     </ul>
                 </div>
@@ -52,17 +57,24 @@
                             <div class="card-header">Register</div>
 
                             <div class="card-body">
-                                <form method="POST" action="">
+                                <?php 
+                                    if (!empty($_SESSION['register'])) {
+                                        echo $_SESSION['register'];    
+                                        unset($_SESSION['register']);  
+                                    } 
+                                ?>   
+                                <form method="POST" action="forms/registerform.php">
 
                                     <div class="form-group row">
                                         <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                                         <div class="col-md-6">
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="" autofocus>
+                                            <!-- <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="" autofocus> -->
+                                            <input id="name" type="text" class="form-control" name="name" autofocus>
 
-                                                <span class="invalid-feedback" role="alert">
+                                           <!--    <span class="invalid-feedback" role="alert">
                                                     <strong>Ошибка валидации</strong>
-                                                </span>
+                                                </span> -->
                                         </div>
                                     </div>
 

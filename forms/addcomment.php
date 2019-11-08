@@ -16,7 +16,7 @@ if ( isset($_REQUEST['name']) AND !empty($_REQUEST['name']) AND isset($_REQUEST[
     $result->execute($data);
     
 } else {
-    $_SESSION['success'] = '<div class="alert alert-success" role="alert"> Поля не заполнены </div>';
+    $_SESSION['success'] = '<div class="alert alert-danger" role="alert"> Поля не заполнены </div>';
 }
 
 header('Location: /index.php');    

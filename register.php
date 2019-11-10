@@ -2,6 +2,32 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 'on');
     session_start();
+
+    if(!empty($_POST['name'])) $name = htmlspecialchars($_POST['name']);       
+    if(!empty($_POST['password'])) $password = $_POST['password'];     
+
+    if (!empty($_POST['email'])) {
+        if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $email = $_POST['email'];            
+        } else {
+            $error = "E-mail адрес " . $_POST['email'] . " указан неверно" . "<br>";
+            $_POST['email'] = NULL;
+        }            
+    }    
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($name) AND isset($email) AND isset($password)) {
+        $datauser = [
+           'name' => $name,
+           'email' => $email,
+             // 'password' => strip_tags($_POST['password'])
+            'password' => password_hash($password, PASSWORD_BCRYPT)
+        ];  
+        $pdo = new PDO('mysql:host=localhost;dbname=marlin_db;charset=utf8','root','');    
+        $sql = "INSERT INTO `user` (`id`, `name`, `email`, `password`) VALUES (NULL, :name, :email, :password)" ;
+        $result = $pdo->prepare($sql);
+        $result->execute($datauser);        
+        $_SESSION['register'] = '<div class="alert alert-success" role="alert"> Вы успешно зарегистрировались </div>';
+    } 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +89,8 @@
                                         unset($_SESSION['register']);  
                                     } 
                                 ?>   
-                                <form method="POST" action="forms/registerform.php">
+                                <!-- <form method="POST" action="forms/registerform.php"> -->
+                                <form method="POST" action=""> 
 
                                     <div class="form-group row">
                                         <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
@@ -71,7 +98,11 @@
                                         <div class="col-md-6">
                                             <!-- <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="" autofocus> -->
                                             <input id="name" type="text" class="form-control" name="name" autofocus>
-
+<?php 
+    if($_SERVER['REQUEST_METHOD'] == 'POST' AND empty($_POST['name'])) {
+        echo "поле не заполнено";
+    }
+?>
                                            <!--    <span class="invalid-feedback" role="alert">
                                                     <strong>Ошибка валидации</strong>
                                                 </span> -->
@@ -80,9 +111,14 @@
 
                                     <div class="form-group row">
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control" name="email" >
+                                            <input id="email" type="text" class="form-control" name="email" >
+<?php 
+    if($_SERVER['REQUEST_METHOD'] == 'POST' AND empty($_POST['email'])) {
+        echo "поле не заполнено"; 
+        if (!empty($error)) echo "<br>" . $error;        
+    } 
+?>                                            
                                         </div>
                                     </div>
 
@@ -91,6 +127,17 @@
 
                                         <div class="col-md-6">
                                             <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
+<?php 
+    if($_SERVER['REQUEST_METHOD'] == 'POST' AND empty($_POST['password'])) {
+        echo "поле не заполнено";
+    } else {
+        if (!empty($_POST['password']) AND !empty($_POST['password_confirmation']))  {
+            if ($_POST['password'] != $_POST['password_confirmation']) {
+                echo "пароли не совпадают";
+            }
+        }
+    }
+?>                                               
                                         </div>
                                     </div>
 
@@ -99,6 +146,11 @@
 
                                         <div class="col-md-6">
                                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password">
+<?php 
+    if($_SERVER['REQUEST_METHOD'] == 'POST' AND empty($_POST['password_confirmation'])) {
+        echo "поле не заполнено";
+    }
+?>                                                
                                         </div>
                                     </div>
 

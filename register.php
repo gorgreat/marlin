@@ -115,8 +115,11 @@
                                             <input id="email" type="text" class="form-control" name="email" >
 <?php 
     if($_SERVER['REQUEST_METHOD'] == 'POST' AND empty($_POST['email'])) {
-        echo "поле не заполнено"; 
-        if (!empty($error)) echo "<br>" . $error;        
+        if (!empty($error)) {
+            echo $error; 
+        } else {
+          echo "поле не заполнено"; 
+        };        
     } 
 ?>                                            
                                         </div>
@@ -131,12 +134,18 @@
     if($_SERVER['REQUEST_METHOD'] == 'POST' AND empty($_POST['password'])) {
         echo "поле не заполнено";
     } else {
-        if (!empty($_POST['password']) AND !empty($_POST['password_confirmation']))  {
-            if ($_POST['password'] != $_POST['password_confirmation']) {
-                echo "пароли не совпадают";
+        
+            if (!empty($_POST['password']) AND !empty($_POST['password_confirmation']))  {
+                if ($_POST['password'] != $_POST['password_confirmation']) {
+                    echo "пароли не совпадают" . "<br>";
+                };
+                if ( mb_strlen($_POST['password'], 'utf-8') <= 3 ) {
+                    echo "количество символов должно быть больше 3";
+                };
             }
         }
-    }
+
+    
 ?>                                               
                                         </div>
                                     </div>
